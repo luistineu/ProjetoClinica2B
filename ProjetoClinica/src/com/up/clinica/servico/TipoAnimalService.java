@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.up.clinica.model.TipoAnimal;
+import com.up.clinica.model.dal.TipoAnimalDAO;
 
 @WebServlet(name = "GetTipoAnimais", urlPatterns = { "/GetTipoAnimais" })
 
@@ -27,18 +28,9 @@ public class TipoAnimalService extends HttpServlet {
 				ServletOutputStream out = response.getOutputStream();
 				
 				List<TipoAnimal> tipoAnimais = new ArrayList<>();
-				TipoAnimal ta1 = new TipoAnimal();
-				ta1.setAcronimo("CAO");
-				ta1.setNome("Cachorro");
-				ta1.setDescricao("É o melhor amigo do homem");
+				TipoAnimalDAO dao = new TipoAnimalDAO();
 				
-				TipoAnimal ta2 = new TipoAnimal();
-				ta2.setAcronimo("GAT");
-				ta2.setNome("Gato");
-				ta2.setDescricao("Tem medo de agua");
-				
-				tipoAnimais.add(ta1);
-				tipoAnimais.add(ta2);
+				tipoAnimais = dao.listar();
 				
 				TipoAnimalJsonConverter converter = new TipoAnimalJsonConverter();
 				String output = converter.convertToJson(tipoAnimais, "tipoAnimais");

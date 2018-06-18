@@ -27,7 +27,7 @@ public class TipoAnimalDAO extends AbstractDAO<TipoAnimal, Long>{
 
 	@Override
 	protected PreparedStatement criarStatementListar(Connection conexao) throws Exception {
-		return conexao.prepareStatement("select acronimo,nome,descricao from tipo_amimal");
+		return conexao.prepareStatement("select ACRONIMO, NOME, DESCRICAO from TIPO_ANIMAL");
 	}
 
 	@Override

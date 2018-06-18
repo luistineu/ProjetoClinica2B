@@ -37,8 +37,26 @@ public class AnimalDAO extends AbstractDAO<Animal, Long> {
 	
 	@Override
 	protected PreparedStatement criarStatementRemover(Connection conexao, Long id) throws Exception {
-		PreparedStatement statement= conexao.prepareStatement("DELETE FROM ANIMAL WHERE id=?");
+String sql = "SELECT  id, nome, nascimento, especie FROM ANIMAL WHERE id = ?";
+		
+		PreparedStatement statement= conexao.prepareStatement(sql);
 		statement.setLong(1, id);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		
+		Animal a = new Animal();
+		while(rs.next()) {
+			a.setId(rs.getLong("id"));
+			a.setNome(rs.getString("nome"));
+			a.setNascimento(rs.getDate("nascimento"));
+			a.getEspecie().getId();
+		}
+		
+		sql = "DELETE FROM ESPECIE WHERE id = ?";
+		statement = conexao.prepareStatement(sql);
+		statement.setLong(1, id);
+		statement.execute();
+
 		return statement;
 	}
 

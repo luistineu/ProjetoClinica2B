@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.up.clinica.model.Animal;
+import com.up.clinica.model.dal.AnimalDAO;
 
 @WebServlet(name = "GetAnimais", urlPatterns = { "/GetAnimais" })
+
 
 public class AnimalService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -26,22 +28,36 @@ public class AnimalService extends HttpServlet {
 				response.setContentType("application/json;charset=UTF-8");
 				ServletOutputStream out = response.getOutputStream();
 				
+				AnimalDAO dao = new AnimalDAO();
+				
 				List<Animal> animais = new ArrayList<>();
-				Animal a1 = new Animal();
-				a1.setId(1L);
-				a1.setNascimento(new Date());
-				a1.setNome("Totó");
-				
-				Animal a2 = new Animal();
-				a2.setId(2L);
-				a2.setNascimento(new Date());
-				a2.setNome("Cãochorro");
-				
-				animais.add(a1);
-				animais.add(a2);
+				animais = dao.listar();
 				
 				AnimalJsonConverter converter = new AnimalJsonConverter();
 				String output = converter.convertToJson(animais, "animais");
+				
+				out.print(output);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try {
+				response.setContentType("application/json;charset=UTF-8");
+				ServletOutputStream out = response.getOutputStream();
+				
+				AnimalDAO dao = new AnimalDAO();
+				
+				Animal animal = new Animal();
+				animal.setNome("Nome");
+				
+				dao.persistir(animal);
+				
+				AnimalJsonConverter converter = new AnimalJsonConverter();
+				String output = converter.convertToJson(animal, "animais");
 				
 				out.print(output);
 		} catch (Exception e) {

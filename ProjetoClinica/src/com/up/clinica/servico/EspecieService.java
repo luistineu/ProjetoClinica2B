@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.up.clinica.model.Especie;
+import com.up.clinica.model.dal.EspecieDAO;
 
 @WebServlet(name = "GetEspecies", urlPatterns = { "/GetEspecies" })
 
@@ -27,18 +28,9 @@ public class EspecieService extends HttpServlet {
 				ServletOutputStream out = response.getOutputStream();
 				
 				List<Especie> especies = new ArrayList<>();
-				Especie e1 = new Especie();
-				e1.setId(1L);
-				e1.setNome("Golden");
-				e1.setDescricao("Cachorro Inteligente");
+				EspecieDAO dao = new EspecieDAO();
 				
-				Especie e2 = new Especie();
-				e2.setId(2L);				
-				e2.setNome("Pitbull");
-				e2.setDescricao("Cachorro Brabo");
-				
-				especies.add(e1);
-				especies.add(e2);
+				especies = dao.listar();
 				
 				EspecieJsonConverter converter = new EspecieJsonConverter();
 				String output = converter.convertToJson(especies, "especies");
